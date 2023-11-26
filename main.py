@@ -59,16 +59,15 @@ def clean_txt():
     #creates the clean folder in your working directory
     if "Clean" not in os.listdir():
         os.mkdir("Clean")
-
-    #dictionary with ascii of ' and - used to translate them to a space
-    chrctrs = {13:0,7:0}
+    #table to exchange the endash and apostrophe to spaces
+    table = str.maketrans("-'","  ")
     #reads each file respectively and writes a clean copy in clean folder
     for i in speeches:
         with open(f"speeches\\{i}","r",encoding="utf-8") as input:
             with open(f"Clean\\{i}","w",encoding="utf-8") as output:
                 for line in input:
                     lowered_line = line.lower()
-                    cleaned = lowered_line.translate(chrctrs)
+                    cleaned = lowered_line.translate(table)
                     cleaned = cleaned.translate(str.maketrans('', '', string.punctuation))
                     unspaced = ' '.join(cleaned.split())
                     output.write(unspaced + "\n")
