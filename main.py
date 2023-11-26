@@ -53,6 +53,17 @@ def display_names():
     for name in full_names:
         print(full_names[name],name)
 
+#this function converts all the text from each txt file in speeches from uppercase to lowercase into the folder Clean
+def convert_to_lower():
+    """this function takes the text files in speeches, reads them and converts every uppercase letter to a lowercase and creates a Clean folder in the main directory storing the copy of the speeches files in lowercase"""
+    if "Clean" not in os.listdir():
+        os.mkdir("Clean")
+    else:
+        for i in speeches:
+            with open(f"speeches\\{i}","r",encoding="utf-8") as input:
+                with open(f"Clean\\{i}","w",encoding="utf-8") as output:
+                    for line in input:
+                        output.write(line.lower())
 
 
 
