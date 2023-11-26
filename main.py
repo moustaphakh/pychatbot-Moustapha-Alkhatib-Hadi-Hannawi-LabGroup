@@ -1,5 +1,5 @@
 #imports used in the code
-import os
+import os,string,math
 
 #list_of_files function creates a list of the current files with the given extension in a certain directory
 def list_of_files(directory, extension):
