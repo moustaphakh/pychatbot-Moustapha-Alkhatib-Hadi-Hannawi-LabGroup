@@ -1,5 +1,5 @@
 #imports used in the code
-import os,string,math
+import os,math,string
 
 #list_of_files function creates a list of the current files with the given extension in a certain directory
 def list_of_files(directory, extension):
@@ -59,7 +59,7 @@ def clean_txt():
     #creates the clean folder in your working directory
     if "Clean" not in os.listdir():
         os.mkdir("Clean")
-    #table to exchange the endash and apostrophe to spaces
+
     table = str.maketrans("-'","  ")
     #reads each file respectively and writes a clean copy in clean folder
     for i in speeches:
@@ -83,3 +83,50 @@ def occurence(line):
         else:
             occurences[word] = 1
     return occurences
+
+def full_occurence(path):
+    words = {}
+    with open(path,"r",encoding="utf-8") as inp:
+        for line in inp:
+            for word in line.split():
+                if word in words:
+                    words[word] += 1
+                else:
+                    words[word] = 1
+    return words
+
+
+def IDF_method(directory):
+    idf = {}
+    appearance = {}
+    for i in list_of_files(directory,"txt"):
+        counter = {}
+        with open(f"{directory}\\{i}","r",encoding="utf-8") as f1:
+            for line in f1:
+                for word in line.split():
+                    if word in counter:
+                        counter[word] += 1
+                    else:
+                        counter[word] = 1
+        for elem in counter:
+            if elem in appearance:
+                appearance[elem] +=1
+            else:
+                appearance[elem] = 1
+    for elem in appearance:
+        if elem in idf:
+            pass
+        else:
+            idf[elem] = math.log10(8/appearance[elem])
+    return idf
+
+
+clean_txt()
+idf = IDF_method("Clean")
+
+#def TF_IDF():
+
+
+
+
+
