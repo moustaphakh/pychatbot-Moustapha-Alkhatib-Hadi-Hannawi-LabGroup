@@ -71,15 +71,3 @@ def clean_txt():
                     cleaned = cleaned.translate(str.maketrans('', '', string.punctuation))
                     unspaced = ' '.join(cleaned.split())
                     output.write(unspaced + "\n")
-
-#this function calculates the occurence of a word in a string
-def occurence(line):
-    """this function calculates the occurence of a word in  a string given
-    @line : str, a sentence"""
-    occurences = {}
-    for word in line.split():
-        if word in occurences:
-            occurences[word] +=1
-        else:
-            occurences[word] = 1
-    return occurences
