@@ -84,19 +84,25 @@ def occurence(line):
             occurences[word] = 1
     return occurences
 
-def full_occurence(path):
+#function that returns the dictionary words with the tf value of every word in a precised file
+def TF_method(path):
+    """function that returns the dictionary of words with their tf value in a precised file
+    @path : string, the file which needs to be checked"""
     words = {}
-    with open(path,"r",encoding="utf-8") as inp:
-        for line in inp:
-            for word in line.split():
-                if word in words:
-                    words[word] += 1
-                else:
-                    words[word] = 1
+    for i in list_of_files(path,"txt"):
+        with open(f"{path}\\{i}","r",encoding="utf-8") as inp:
+            for line in inp:
+                for word in line.split():
+                    if word in words:
+                        words[word] += 1
+                    else:
+                        words[word] = 1
     return words
 
-
+#function that returns the dictionary idf with the idf value of every word, the directory is Clean
 def IDF_method(directory):
+    """function that returns the dictionary of idf value of every word in a folder directory
+    @directory: string, the directory of the folder that needs checking"""
     idf = {}
     appearance = {}
     for i in list_of_files(directory,"txt"):
@@ -121,8 +127,26 @@ def IDF_method(directory):
     return idf
 
 
+#function that returns a list of words with 0 tf-idf
+def idf0(directory):
+    """this function returns a list of all words with 0 tf-idf contained in the text files of a directory"""
+    idf = IDF_method(directory)
+    tf = TF_method(directory)
+    tf_idf = {}
+    for elem in idf:
+        tf_idf[elem] = tf[elem] * idf[elem]
+    tf_idf0 = []
+    for i in idf:
+        if tf_idf[i] == 0:
+            tf_idf0.append(i)
+    return tf_idf0 
+
+print(idf0("Clean"))
 clean_txt()
-idf = IDF_method("Clean")
+
+
+
+
 
 #def TF_IDF():
 
