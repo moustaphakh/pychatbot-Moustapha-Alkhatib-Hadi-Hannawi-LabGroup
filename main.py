@@ -1,5 +1,5 @@
 #imports used in the code
-import os,string,math
+import os,math,string
 
 #list_of_files function creates a list of the current files with the given extension in a certain directory
 def list_of_files(directory, extension):
@@ -59,7 +59,7 @@ def clean_txt():
     #creates the clean folder in your working directory
     if "Clean" not in os.listdir():
         os.mkdir("Clean")
-    #table to exchange the endash and apostrophe to spaces
+
     table = str.maketrans("-'","  ")
     #reads each file respectively and writes a clean copy in clean folder
     for i in speeches:
@@ -72,10 +72,102 @@ def clean_txt():
                     unspaced = ' '.join(cleaned.split())
                     output.write(unspaced + "\n")
 
+#this function calculates the occurence of a word in a string
+def occurence(line):
+    """this function calculates the occurence of a word in  a string given
+    @line : str, a sentence"""
+    occurences = {}
+    for word in line.split():
+        if word in occurences:
+            occurences[word] +=1
+        else:
+            occurences[word] = 1
+    return occurences
+
+#function that returns the dictionary words with the tf value of every word in a precised file
+def TF_method(Directory):
+    """function that returns the dictionary of words with their tf value in a precised folder of documents Directory
+    @Directory : string, the folder which needs to be checked"""
+    words = {}
+    for i in list_of_files(Directory,"txt"):
+        with open(f"{Directory}\\{i}","r",encoding="utf-8") as inp:
+            for line in inp:
+                for word in line.split():
+                    if word in words:
+                        words[word] += 1
+                    else:
+                        words[word] = 1
+    return words
+
+def appearance_in_docs(directory):
+    appearance = {}
+    for i in list_of_files(directory,"txt"):
+        counter = {}
+        with open(f"{directory}\\{i}","r",encoding="utf-8") as f1:
+            for line in f1:
+                for word in line.split():
+                    if word in counter:
+                        counter[word] += 1
+                    else:
+                        counter[word] = 1
+        for elem in counter:
+            if elem in appearance:
+                appearance[elem] +=1
+            else:
+                appearance[elem] = 1
+    return appearance
+
+#function that returns the dictionary idf with the idf value of every word, the directory is Clean
+def IDF_method(directory):
+    """function that returns the dictionary of idf value of every word in a folder directory
+    @directory: string, the directory of the folder that needs checking"""
+    idf = {}
+    appearance = {}
+    for i in list_of_files(directory,"txt"):
+        counter = {}
+        with open(f"{directory}\\{i}","r",encoding="utf-8") as f1:
+            for line in f1:
+                for word in line.split():
+                    if word in counter:
+                        counter[word] += 1
+                    else:
+                        counter[word] = 1
+        for elem in counter:
+            if elem in appearance:
+                appearance[elem] +=1
+            else:
+                appearance[elem] = 1
+    for elem in appearance:
+        if elem in idf:
+            pass
+        else:
+            idf[elem] = math.log10(8/appearance[elem])
+    return idf
+
+#function that returns the dictionary tf_idf containing the tf-idf values of every word in a said directory
+def TF_IDF(directory):
+    """function that returns the dictionary tf_idf containing the tf_idf values of every word in a said directory
+    @directory: string,the directory of the folder that needs checking"""
+    idf = IDF_method(directory)
+    tf = TF_method(directory)
+    tf_idf = {}
+    for elem in idf:
+        tf_idf[elem] = tf[elem] * idf[elem]
+    return tf_idf
 
 
 
-
-
-
-
+#function that returns a list of words with 0 tf-idf
+def TF_IDF0(directory):
+    """this function returns a list of all words with 0 tf-idf contained in the text files of a directory
+    @directory: string,the directory of the folder that needs checking"""
+    idf = IDF_method(directory)
+    tf = TF_method(directory)
+    tf_idf = {}
+    for elem in idf:
+        tf_idf[elem] = tf[elem] * idf[elem]
+    tf_idf0 = []
+    for i in idf:
+        if tf_idf[i] == 0:
+            tf_idf0.append(i)
+    return tf_idf0
