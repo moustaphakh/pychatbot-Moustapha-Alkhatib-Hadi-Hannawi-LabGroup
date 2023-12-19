@@ -155,6 +155,8 @@ def TF_IDF(directory):
         tf_idf[elem] = tf[elem] * idf[elem]
     return tf_idf
 
+
+
 #function that returns a list of words with 0 tf-idf
 def TF_IDF0(directory):
     """this function returns a list of all words with 0 tf-idf contained in the text files of a directory
@@ -168,14 +170,4 @@ def TF_IDF0(directory):
     for i in idf:
         if tf_idf[i] == 0:
             tf_idf0.append(i)
-    return tf_idf0 
-
-print(appearance_in_docs("Clean")["ceux"])
-print(TF_IDF("Clean")["ceux"])
-clean_txt()
-
-
-
-
-
-#def TF_IDF():
+    return tf_idf0
